@@ -11,14 +11,14 @@ datasource db {
 }
 
 model Pet {
-  id          String @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String
-  size        String
-  description String
-  energy      Int
-  ambient     String
-  age         String
-  imgUrl      String
+  size        String?
+  description String?
+  energy      Int?
+  ambient     String?
+  age         String?
+  imgUrl      String?
 
   organization    Organization @relation(fields: [organization_id], references: [id])
   organization_id String
