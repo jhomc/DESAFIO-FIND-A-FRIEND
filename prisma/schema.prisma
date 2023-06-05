@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Pet {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   name        String
   size        String?
   description String?
@@ -19,6 +19,7 @@ model Pet {
   ambient     String?
   age         String?
   imgUrl      String?
+  created_at  DateTime @default(now())
 
   organization    Organization @relation(fields: [organization_id], references: [id])
   organization_id String
@@ -27,14 +28,15 @@ model Pet {
 }
 
 model Organization {
-  id             String @id @default(uuid())
+  id             String   @id @default(uuid())
   name           String
-  email          String @unique
-  password       String
+  email          String   @unique
+  password_hash  String
   street         String
-  cep            String
+  cep            Int
   address_number String
   phone          String
+  created_at     DateTime @default(now())
 
   Pet Pet[]
 
