@@ -1,5 +1,5 @@
 import { InMemoryOrganizationsRepository } from '@/repositories/in-memory/in-memory-organizations-repository'
-import { CreateOrganizationUseCase } from './create-organization-use-case'
+import { CreateOrganizationUseCase } from './create-organization'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 let organizationsRepository: InMemoryOrganizationsRepository

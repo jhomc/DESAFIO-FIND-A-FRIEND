@@ -8,7 +8,7 @@
     "build": "tsup src --out-dir build",
     "start": "node build/server.js",
     "test": "vitest run",
-    "test:watch": "vitest" 
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +27,7 @@
     "vitest": "0.31.4"
   },
   "dependencies": {
+    "@fastify/jwt": "7.0.0",
     "@prisma/client": "4.15.0",
     "dotenv": "16.1.0",
     "fastify": "4.17.0",
