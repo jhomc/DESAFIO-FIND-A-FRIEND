@@ -6,17 +6,17 @@ export class InMemoryPetsRepository implements PetsRepository {
   public items: Pet[] = []
 
   async findByParams(
-    organizationIds: string[] | undefined,
-    name?: string | undefined,
-    description?: string | undefined,
-    size?: string | undefined,
-    age?: string | undefined,
-    energy?: number | undefined,
+    organizationIds: string[],
+    name: string,
+    description: string,
+    size: string,
+    age: string,
+    energy: number,
   ) {
     const pets = this.items.filter((pet) => {
       return (
         (!organizationIds || organizationIds.includes(pet.organization_id)) &&
-        (!name || pet.name === name) &&
+        (!name || pet.name.includes(name)) &&
         (!description || pet.description === description) &&
         (!size || pet.size === size) &&
         (!age || pet.age === age) &&
