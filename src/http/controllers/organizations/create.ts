@@ -11,9 +11,10 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     cep: z.number().min(8),
     address_number: z.string(),
     phone: z.string(),
+    city: z.string(),
   })
 
-  const { name, email, password, street, address_number, cep, phone } =
+  const { name, email, password, street, address_number, cep, phone, city } =
     createOrganizationBodySchema.parse(request.body)
 
   try {
@@ -26,6 +27,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
       street,
       address_number,
       cep,
+      city,
     })
   } catch (error) {
     console.error(error)

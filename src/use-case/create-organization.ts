@@ -10,6 +10,7 @@ interface OrganizationUseCasRequest {
   cep: number
   address_number: string
   phone: string
+  city: string
 }
 
 interface OrganizationUseCaseResponse {
@@ -27,6 +28,7 @@ export class CreateOrganizationUseCase {
     street,
     address_number,
     cep,
+    city,
   }: OrganizationUseCasRequest): Promise<OrganizationUseCaseResponse> {
     const password_hash = await hash(password, 6)
 
@@ -38,6 +40,7 @@ export class CreateOrganizationUseCase {
       street,
       address_number,
       cep,
+      city,
     })
 
     return { organization }
