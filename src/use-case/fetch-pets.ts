@@ -2,6 +2,7 @@ import { OrganizationsRepository } from '@/repositories/organizations-repository
 import { PetsRepository } from '@/repositories/pets-repository'
 import { Pet } from '@prisma/client'
 import { InvalidCityError } from './errors/invalid-city-error'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface FetchPetsUseCaseRequest {
   city: string
@@ -15,7 +16,7 @@ interface FetchPetsUseCaseRequest {
 }
 
 interface FetchPetsUseCaseResponse {
-  pets: Pet[] | null
+  pets: Pet[]
 }
 
 export class FetchPetsUseCase {
@@ -37,6 +38,10 @@ export class FetchPetsUseCase {
     const organizationIds = organizations.map((organization) => organization.id)
 
     const pets = await this.petsRpository.findByParams(organizationIds, query)
+
+    if (!pets) {
+      throw new ResourceNotFoundError()
+    }
 
     return { pets }
   }
