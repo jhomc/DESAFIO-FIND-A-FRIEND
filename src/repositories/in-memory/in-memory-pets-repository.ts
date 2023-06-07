@@ -5,14 +5,18 @@ import { randomUUID } from 'crypto'
 export class InMemoryPetsRepository implements PetsRepository {
   public items: Pet[] = []
 
-  async findByParams(
-    organizationIds: string[],
-    name: string,
-    description: string,
-    size: string,
-    age: string,
-    energy: number,
-  ) {
+  async findById(id: string) {
+    const pet = this.items.find((item) => item.id === id)
+
+    if (!pet) {
+      return null
+    }
+
+    return pet
+  }
+
+  async findByParams(organizationIds: string[], query: Record<string, string>) {
+    const { name, description, size, age, energy } = query ?? {}
     const pets = this.items.filter((pet) => {
       return (
         (!organizationIds || organizationIds.includes(pet.organization_id)) &&
@@ -20,7 +24,7 @@ export class InMemoryPetsRepository implements PetsRepository {
         (!description || pet.description === description) &&
         (!size || pet.size === size) &&
         (!age || pet.age === age) &&
-        (!energy || pet.energy === energy)
+        (!energy || pet.energy === parseInt(energy))
       )
     })
 
@@ -31,12 +35,12 @@ export class InMemoryPetsRepository implements PetsRepository {
     const pet = {
       id: randomUUID(),
       name: data.name,
-      size: data.size !== undefined ? data.size : null,
-      age: data.age !== undefined ? data.age : null,
-      description: data.description !== undefined ? data.description : null,
-      ambient: data.ambient !== undefined ? data.ambient : null,
+      size: data.size ?? null,
+      age: data.age ?? null,
+      description: data.description ?? null,
+      ambient: data.ambient ?? null,
       energy: data.energy ?? null,
-      imgUrl: data.imgUrl !== undefined ? data.imgUrl : null,
+      imgUrl: data.imgUrl ?? null,
       organization_id: data.organization_id,
       created_at: new Date(),
     }

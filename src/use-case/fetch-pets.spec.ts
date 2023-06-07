@@ -72,7 +72,9 @@ describe('Fetch Pets Use Case', () => {
 
     const { pets } = await sut.execute({
       city: 'Curitiba',
-      size: 'Grande',
+      query: {
+        size: 'Grande',
+      },
     })
 
     expect(pets).toHaveLength(1)

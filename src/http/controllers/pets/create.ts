@@ -5,12 +5,12 @@ import { z } from 'zod'
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const createPetBodySchema = z.object({
     name: z.string(),
-    size: z.string().nullable(),
-    description: z.string().nullable(),
-    energy: z.number().nullable(),
-    ambient: z.string().nullable(),
-    age: z.string().nullable(),
-    imgUrl: z.string().nullable(),
+    size: z.string().optional(),
+    description: z.string().optional(),
+    energy: z.number().optional(),
+    ambient: z.string().optional(),
+    age: z.string().optional(),
+    imgUrl: z.string().optional(),
   })
 
   const createPetQuerySchema = z.object({

@@ -3,12 +3,12 @@ import { Pet } from '@prisma/client'
 
 interface CreatePetUseCaseRequest {
   name: string
-  size?: string | null
-  description?: string | null
-  energy?: number | null
-  ambient?: string | null
-  age?: string | null
-  imgUrl?: string | null
+  size?: string
+  description?: string
+  energy?: number
+  ambient?: string
+  age?: string
+  imgUrl?: string
   organizationId: string
 }
 

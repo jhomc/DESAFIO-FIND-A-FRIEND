@@ -1,14 +1,17 @@
 import { OrganizationsRepository } from '@/repositories/organizations-repository'
 import { PetsRepository } from '@/repositories/pets-repository'
 import { Pet } from '@prisma/client'
+import { InvalidCityError } from './errors/invalid-city-error'
 
 interface FetchPetsUseCaseRequest {
   city: string
-  name?: string
-  description?: string
-  size?: string
-  age?: string
-  energy?: number
+  query?: {
+    name?: string
+    description?: string
+    size?: string
+    age?: string
+    energy?: string
+  }
 }
 
 interface FetchPetsUseCaseResponse {
@@ -23,29 +26,17 @@ export class FetchPetsUseCase {
 
   async execute({
     city,
-    name,
-    description,
-    size,
-    age,
-    energy,
+    query,
   }: FetchPetsUseCaseRequest): Promise<FetchPetsUseCaseResponse> {
     const organizations = await this.organizationsRepository.findByCity(city)
 
     if (!organizations) {
-      throw new Error()
-      // TODO: Create invalid city error
+      throw new InvalidCityError()
     }
 
     const organizationIds = organizations.map((organization) => organization.id)
 
-    const pets = await this.petsRpository.findByParams(
-      organizationIds,
-      name,
-      description,
-      size,
-      age,
-      energy,
-    )
+    const pets = await this.petsRpository.findByParams(organizationIds, query)
 
     return { pets }
   }

@@ -3,24 +3,27 @@ import { PetsRepository } from '../pets-repository'
 import { prisma } from '@/lib/prisma'
 
 export class PrismaPetsRepository implements PetsRepository {
-  async findByParams(
-    organizationIds: string[],
-    name?: string | undefined,
-    description?: string | undefined,
-    size?: string | undefined,
-    age?: string | undefined,
-    energy?: number | undefined,
-  ) {
+  async findById(id: string) {
+    const pet = prisma.pet.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    return pet
+  }
+
+  async findByParams(organizationIds: string[], query: Record<string, string>) {
     const pets = await prisma.pet.findMany({
       where: {
         organization_id: {
           in: organizationIds,
         },
-        name: name ?? undefined,
-        description: description ?? undefined,
-        size: size ?? undefined,
-        age: age ?? undefined,
-        energy: energy ?? undefined,
+        name: query.name ?? undefined,
+        description: query.description ?? undefined,
+        size: query.size ?? undefined,
+        age: query.age ?? undefined,
+        energy: parseInt(query.energy) ?? undefined,
       },
     })
 
