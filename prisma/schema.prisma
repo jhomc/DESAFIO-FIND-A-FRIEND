@@ -24,7 +24,7 @@ model Pet {
   organization    Organization @relation(fields: [organization_id], references: [id])
   organization_id String
 
-  @@map("users")
+  @@map("pets")
 }
 
 model Organization {
@@ -36,6 +36,7 @@ model Organization {
   cep            Int
   address_number String
   phone          String
+  city           String
   created_at     DateTime @default(now())
 
   Pet Pet[]
