@@ -4,4 +4,5 @@ export interface OrganizationsRepository {
   create(data: Prisma.OrganizationUncheckedCreateInput): Promise<Organization>
   findByEmail(email: string): Promise<Organization | null>
   findByCity(city: string): Promise<Organization[] | null>
+  findById(id: string): Promise<Organization | null>
 }
