@@ -7,6 +7,12 @@ export class InMemoryOrganizationsRepository
 {
   public items: Organization[] = []
 
+  async findByCity(city: string) {
+    const organizations = this.items.filter((org) => org.city === city)
+
+    return organizations
+  }
+
   async findByEmail(email: string) {
     const organization = this.items.find((org) => org.email === email)
 
@@ -27,6 +33,7 @@ export class InMemoryOrganizationsRepository
       street: data.street,
       address_number: data.address_number,
       cep: data.cep,
+      city: data.city,
       created_at: new Date(),
     }
 
