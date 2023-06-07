@@ -22,18 +22,21 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
   const { organizationId } = createPetQuerySchema.parse(request.params)
 
-  const createPetUseCase = makeCreatePetUseCase()
-
-  await createPetUseCase.execute({
-    name,
-    organizationId,
-    age,
-    ambient,
-    description,
-    energy,
-    imgUrl,
-    size,
-  })
+  try {
+    const createPetUseCase = makeCreatePetUseCase()
+    await createPetUseCase.execute({
+      name,
+      organizationId,
+      age,
+      ambient,
+      description,
+      energy,
+      imgUrl,
+      size,
+    })
+  } catch (err) {
+    console.log(err)
+  }
 
   return reply.status(201).send()
 }
