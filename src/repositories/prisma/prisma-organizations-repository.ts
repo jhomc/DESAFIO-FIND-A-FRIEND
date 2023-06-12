@@ -24,6 +24,8 @@ export class PrismaOrganizationsRepository implements OrganizationsRepository {
       },
     })
 
+    if (organizations.length === 0) return null
+
     return organizations
   }
 

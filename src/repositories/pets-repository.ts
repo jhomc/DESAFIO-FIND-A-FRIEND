@@ -5,6 +5,6 @@ export interface PetsRepository {
   findById(id: string): Promise<Pet | null>
   findByParams(
     organizationIds: string[],
-    query?: Record<string, string>,
-  ): Promise<Pet[] | null>
+    query: string,
+  ): Promise<Omit<Pet, 'id' | 'organization_id'>[] | null>
 }

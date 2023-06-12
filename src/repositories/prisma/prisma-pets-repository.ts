@@ -13,17 +13,31 @@ export class PrismaPetsRepository implements PetsRepository {
     return pet
   }
 
-  async findByParams(organizationIds: string[], query: Record<string, string>) {
+  async findByParams(organizationIds: string[], query: string) {
+    const parsedQuery = JSON.parse(query)
+
     const pets = await prisma.pet.findMany({
       where: {
         organization_id: {
           in: organizationIds,
         },
-        name: query.name ?? undefined,
-        description: query.description ?? undefined,
-        size: query.size ?? undefined,
-        age: query.age ?? undefined,
-        energy: parseInt(query.energy) ?? undefined,
+        name: parsedQuery.name ?? undefined,
+        description: parsedQuery.description ?? undefined,
+        size: parsedQuery.size ?? undefined,
+        age: parsedQuery.age ?? undefined,
+        energy:
+          parsedQuery.energy != null ? parseInt(parsedQuery.energy) : undefined,
+      },
+
+      select: {
+        name: true,
+        age: true,
+        description: true,
+        size: true,
+        imgUrl: true,
+        energy: true,
+        ambient: true,
+        created_at: true,
       },
     })
 

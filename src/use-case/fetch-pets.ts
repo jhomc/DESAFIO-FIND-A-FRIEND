@@ -5,18 +5,11 @@ import { InvalidCityError } from './errors/invalid-city-error'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface FetchPetsUseCaseRequest {
-  city: string
-  query?: {
-    name?: string
-    description?: string
-    size?: string
-    age?: string
-    energy?: string
-  }
+  query: string
 }
 
 interface FetchPetsUseCaseResponse {
-  pets: Pet[]
+  pets: Omit<Pet, 'id' | 'organization_id' | 'organization'>[]
 }
 
 export class FetchPetsUseCase {
@@ -26,10 +19,17 @@ export class FetchPetsUseCase {
   ) {}
 
   async execute({
-    city,
     query,
   }: FetchPetsUseCaseRequest): Promise<FetchPetsUseCaseResponse> {
-    const organizations = await this.organizationsRepository.findByCity(city)
+    const parsedQuery = JSON.parse(query)
+
+    if (!parsedQuery.city) {
+      throw new InvalidCityError()
+    }
+
+    const organizations = await this.organizationsRepository.findByCity(
+      parsedQuery.city,
+    )
 
     if (!organizations) {
       throw new InvalidCityError()
