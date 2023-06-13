@@ -15,8 +15,9 @@ export class InMemoryPetsRepository implements PetsRepository {
     return pet
   }
 
-  async findByParams(organizationIds: string[], query: Record<string, string>) {
-    const { name, description, size, age, energy } = query ?? {}
+  async findByParams(organizationIds: string[], query: string) {
+    const parsedQuery = JSON.parse(query)
+    const { name, description, size, age, energy } = parsedQuery ?? {}
     const pets = this.items.filter((pet) => {
       return (
         (!organizationIds || organizationIds.includes(pet.organization_id)) &&

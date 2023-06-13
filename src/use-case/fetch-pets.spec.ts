@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository'
 import { hash } from 'bcryptjs'
 import { FetchPetsUseCase } from './fetch-pets'
+import { InvalidCityError } from './errors/invalid-city-error'
 
 let organizationsRepository: InMemoryOrganizationsRepository
 let petsRepository: InMemoryPetsRepository
@@ -40,7 +41,9 @@ describe('Fetch Pets Use Case', () => {
     })
 
     const { pets } = await sut.execute({
-      city: 'Curitiba',
+      query: JSON.stringify({
+        city: 'Curitiba',
+      }),
     })
 
     expect(pets).toHaveLength(2)
@@ -71,13 +74,40 @@ describe('Fetch Pets Use Case', () => {
     })
 
     const { pets } = await sut.execute({
-      city: 'Curitiba',
-      query: {
+      query: JSON.stringify({
+        city: 'Curitiba',
         size: 'Grande',
-      },
+      }),
     })
 
     expect(pets).toHaveLength(1)
     expect(pets).toEqual([expect.objectContaining({ name: 'Caramelo' })])
+  })
+
+  it('should not be able to find pets without city', async () => {
+    const organization = await organizationsRepository.create({
+      name: 'Jhon Org',
+      email: 'jhon.org@gmail.com',
+      password_hash: await hash('123456', 6),
+      street: 'Test street',
+      phone: '41996196231',
+      cep: 81650220,
+      address_number: '312, house 5',
+      city: 'Curitiba',
+    })
+
+    await petsRepository.create({
+      name: 'Caramelo',
+      size: 'Grande',
+      organization_id: organization.id,
+    })
+
+    await expect(() =>
+      sut.execute({
+        query: JSON.stringify({
+          size: 'Grande',
+        }),
+      }),
+    ).rejects.toBeInstanceOf(InvalidCityError)
   })
 })
