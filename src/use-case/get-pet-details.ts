@@ -7,7 +7,7 @@ interface GetPetDetailsUseCaseRequest {
 }
 
 interface GetPetDetailsUseCaseResponse {
-  pet: Pet
+  pet: Omit<Pet, 'id' | 'organization_id'>
 }
 
 export class GetPetDetailsUseCase {
@@ -16,7 +16,7 @@ export class GetPetDetailsUseCase {
   async execute({
     petId,
   }: GetPetDetailsUseCaseRequest): Promise<GetPetDetailsUseCaseResponse> {
-    const pet = await this.petsRepository.findById(petId)
+    const pet = await this.petsRepository.findDetailsById(petId)
 
     if (!pet) {
       throw new ResourceNotFoundError()

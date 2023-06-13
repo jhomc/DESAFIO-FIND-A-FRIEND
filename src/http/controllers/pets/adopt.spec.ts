@@ -22,7 +22,7 @@ describe('Adopt pet e2e', () => {
       },
     })
 
-    const response = await request(app.server).post(`/pets/adopt/${pet.id}`)
+    const response = await request(app.server).get(`/pets/adopt/${pet.id}`)
 
     expect(response.statusCode).toEqual(200)
     expect(response.body.organization).toEqual(

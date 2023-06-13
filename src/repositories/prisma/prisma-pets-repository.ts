@@ -1,8 +1,31 @@
-import { Prisma } from '.prisma/client'
+import { Pet, Prisma } from '.prisma/client'
 import { PetsRepository } from '../pets-repository'
 import { prisma } from '@/lib/prisma'
 
 export class PrismaPetsRepository implements PetsRepository {
+  findDetailsById(
+    id: string,
+  ): Promise<Omit<Pet, 'id' | 'organization_id'> | null> {
+    const pet = prisma.pet.findUnique({
+      where: {
+        id,
+      },
+
+      select: {
+        name: true,
+        age: true,
+        description: true,
+        size: true,
+        imgUrl: true,
+        energy: true,
+        ambient: true,
+        created_at: true,
+      },
+    })
+
+    return pet
+  }
+
   async findById(id: string) {
     const pet = prisma.pet.findUnique({
       where: {
