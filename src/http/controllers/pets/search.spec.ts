@@ -13,17 +13,23 @@ describe('Search pet e2e', () => {
   })
   it('should be able to search pet', async () => {
     // criar organizacao -> authentica -> cria pet -> procura pet
-    const { organization } = await createAndAuthenticateOrganization(app)
+    const { organization, token } = await createAndAuthenticateOrganization(app)
 
-    await request(app.server).post(`/pets/${organization.id}`).send({
-      name: 'Doly',
-      size: 'Grande',
-    })
+    await request(app.server)
+      .post(`/pets/${organization.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'Doly',
+        size: 'Grande',
+      })
 
-    await request(app.server).post(`/pets/${organization.id}`).send({
-      name: 'Montanha',
-      size: 'Pequeno',
-    })
+    await request(app.server)
+      .post(`/pets/${organization.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'Montanha',
+        size: 'Pequeno',
+      })
 
     const response = await request(app.server)
       .get('/pets/search')

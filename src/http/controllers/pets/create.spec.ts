@@ -12,10 +12,11 @@ describe('Create pet e2e', () => {
     await app.close()
   })
   it('should be able to create pet', async () => {
-    const { organization } = await createAndAuthenticateOrganization(app)
+    const { organization, token } = await createAndAuthenticateOrganization(app)
 
     const response = await request(app.server)
       .post(`/pets/${organization.id}`)
+      .set('Authorization', `Bearer ${token}`)
       .send({
         name: 'Doly',
       })
